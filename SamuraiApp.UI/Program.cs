@@ -20,16 +20,24 @@ namespace SamuraiApp.UI
             //Console.ReadKey();
 
             QueryFilters();
+            QueryAggregates();
+        }
+
+        private static void QueryAggregates()
+        {
+            var name = "Shimada";
+            var samurais = _context.Samurais.Where(s => s.Name == name).FirstOrDefault();
+            //_context.Samurais.Find(2);
         }
 
         private static void QueryFilters()
         {
             var name = "Shimada";
-            var samurais = _context.Samurais.Where(s => s.Name == name).ToList();
+            var samurais = _context.Samurais.FirstOrDefault(s => s.Name == name);
 
-            _context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
+            //_context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
 
-            _context.Samurais.Where(s => s.Name.Contains("abc"));
+            //_context.Samurais.Where(s => s.Name.Contains("abc"));
         }
 
         private static void AddVariousTypes()
