@@ -1,4 +1,5 @@
-﻿using SamuraiApp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using SamuraiApp.Data;
 using SamuraiApp.Domain;
 using System;
 using System.Linq;
@@ -11,13 +12,26 @@ namespace SamuraiApp.UI
 
         private static void Main(string[] args)
         {
-           // AddSamurais("Shimada","Okamoto","Kikuchio","Hayashida");
+            // AddSamurais("Shimada","Okamoto","Kikuchio","Hayashida");
             // AddSamurai();
-            AddVariousTypes();
-            GetSamurais("After Add:");
-            Console.Write("Press any key...");
-            Console.ReadKey();
+            // AddVariousTypes();
+            //GetSamurais("After Add:");
+            //Console.Write("Press any key...");
+            //Console.ReadKey();
+
+            QueryFilters();
         }
+
+        private static void QueryFilters()
+        {
+            var name = "Shimada";
+            var samurais = _context.Samurais.Where(s => s.Name == name).ToList();
+
+            _context.Samurais.Where(s => EF.Functions.Like(s.Name, "J%")).ToList();
+
+            _context.Samurais.Where(s => s.Name.Contains("abc"));
+        }
+
         private static void AddVariousTypes()
         {
             _context.Samurais.AddRange(
