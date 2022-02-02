@@ -19,8 +19,33 @@ namespace SamuraiApp.UI
             //Console.Write("Press any key...");
             //Console.ReadKey();
 
-            QueryFilters();
-            QueryAggregates();
+            //QueryFilters();
+            //QueryAggregates();
+            RetriveeAndUpdateSamurai();
+            RetriveeAndUpdateMultipleSamurais();
+            MultipleDatabaseOperations();
+        }
+
+        private static void MultipleDatabaseOperations()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name += "San";
+            _context.Samurais.Add(new Samurai { Name = "Shino" });
+            _context.SaveChanges();
+        }
+
+        private static void RetriveeAndUpdateMultipleSamurais()
+        {
+            var samurai = _context.Samurais.Skip(1).Take(4).ToList();
+            samurai.ForEach(s => s.Name += "San");
+            _context.SaveChanges();
+        }
+
+        private static void RetriveeAndUpdateSamurai()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Name += "San";
+            _context.SaveChanges();
         }
 
         private static void QueryAggregates()
