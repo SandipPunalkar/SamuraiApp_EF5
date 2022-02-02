@@ -21,9 +21,18 @@ namespace SamuraiApp.UI
 
             //QueryFilters();
             //QueryAggregates();
-            RetriveeAndUpdateSamurai();
-            RetriveeAndUpdateMultipleSamurais();
-            MultipleDatabaseOperations();
+            //RetriveeAndUpdateSamurai();
+            //RetriveeAndUpdateMultipleSamurais();
+            //MultipleDatabaseOperations();
+
+            RetriveeAndDeleteSamurai();
+        }
+
+        private static void RetriveeAndDeleteSamurai()
+        {
+            var samurai = _context.Samurais.Find(18);
+            _context.Samurais.Remove(samurai);
+            _context.SaveChanges();
         }
 
         private static void MultipleDatabaseOperations()
