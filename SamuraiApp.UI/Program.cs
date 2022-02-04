@@ -33,7 +33,24 @@ namespace SamuraiApp.UI
             // InsertNewSamuraiWithQuote();
             // InsertNewSamuraiWithManyQuote();
             //AddQuoteToExistingSamuraiWhileTracked();
-           AddQuoteToExistingSamuraiNotTracked(2);
+            //AddQuoteToExistingSamuraiNotTracked(2);
+
+            EagarLoadSamuraiWithQuotes();
+
+        }
+
+        private static void EagarLoadSamuraiWithQuotes()
+        {
+            var samuraiWithQuotes = _context.Samurais
+                .Include(s => s.Quotes.Where(q => q.Text.Contains("Thanks"))).ToList();
+
+            //var filterPrimaryEntityWithInclude = _context.Samurais.Where(s => s.Name.Contains("Sampson"))
+            //    .Include(s => s.Quotes).FirstOrDefault();
+            //_context.Samurais.Include(s => s.Quotes);
+            //_context.Samurais.Include(s => s.Quotes).ThenInclude(q => q.Ttanslations);
+            //_context.Samurais.Include(s => s.Quotes.Translations);
+            //_context.Samurais.Include(s => s.Quotes).Include(s => s.Clan);
+
 
         }
 
