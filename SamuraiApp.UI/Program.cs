@@ -28,7 +28,66 @@ namespace SamuraiApp.UI
 
             //RetriveeAndDeleteSamurai();
 
-            QueryAndUpdateBattles_Disconnect();
+            //QueryAndUpdateBattles_Disconnect();
+
+            // InsertNewSamuraiWithQuote();
+            // InsertNewSamuraiWithManyQuote();
+            //AddQuoteToExistingSamuraiWhileTracked();
+           AddQuoteToExistingSamuraiNotTracked(2);
+
+        }
+
+        private static void AddQuoteToExistingSamuraiNotTracked(int samuraiId)
+        {
+            var samurai = _context.Samurais.Find(samuraiId);
+            samurai.Quotes.Add(new Quote
+            {
+                Text = "Now that I saved you,will you feed me dinner?"
+            });
+            using (var newContext = new SamuraiContext())
+            {
+                newContext.Samurais.Update(samurai);
+                newContext.SaveChanges();
+            }
+        }
+
+        private static void AddQuoteToExistingSamuraiWhileTracked()
+        {
+            var samurai = _context.Samurais.FirstOrDefault();
+            samurai.Quotes.Add(new Quote
+            {
+                Text = "I be you're happy that I've saved you"
+            });
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewSamuraiWithManyQuote()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Kyuzo",
+                Quotes = new List<Quote>
+                {
+                    new Quote{Text="Watch out for my sharp sword!"},
+                    new Quote{Text="I told you to watch out for the sharp sword! oh well!"}
+                }
+            };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
+        }
+
+        private static void InsertNewSamuraiWithQuote()
+        {
+            var samurai = new Samurai
+            {
+                Name = "Kamberi Shimada",
+                Quotes = new List<Quote>
+                {
+                    new Quote{Text="I'we come to save you"}
+                }
+            };
+            _context.Samurais.Add(samurai);
+            _context.SaveChanges();
         }
 
         private static void QueryAndUpdateBattles_Disconnect()
