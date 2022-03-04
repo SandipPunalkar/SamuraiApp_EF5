@@ -35,7 +35,90 @@ namespace SamuraiApp.UI
             //AddQuoteToExistingSamuraiWhileTracked();
             //AddQuoteToExistingSamuraiNotTracked(2);
 
-            EagarLoadSamuraiWithQuotes();
+            //EagarLoadSamuraiWithQuotes();
+            //ProjectSomeProperties();
+            //ProjectSamuraisWithQuotes();
+
+            //ExplicitLoadQuotes();
+            // FilteringWithRelatedData();
+
+            ModifyingRelatedDataWhenTracked();
+            ModifyingRelatedDataWhenNotTracked();
+
+        }
+
+        private static void ModifyingRelatedDataWhenNotTracked()
+        {
+            var samurai = _context.Samurais
+                .Include(s => s.Quotes).FirstOrDefault(s => s.Id == 2);
+
+            //update
+            var quote = samurai.Quotes[0];
+             quote.Text += "Did you here that again?";
+
+            using var newContext = new SamuraiContext();
+            newContext.Quotes.Update(quote);
+            newContext.SaveChanges();
+        }
+
+        private static void ModifyingRelatedDataWhenTracked()
+        {
+            var samurai = _context.Samurais
+                .Include(s => s.Quotes).FirstOrDefault(s => s.Id == 2);
+
+            //update
+            samurai.Quotes[0].Text = "Did you here that?";
+
+            //Delete
+            _context.Quotes.Remove(samurai.Quotes[2]);
+            _context.SaveChanges();
+        }
+
+        private static void FilteringWithRelatedData()
+        {
+            var samurais = _context.Samurais
+                .Where(s => s.Quotes.Any(q => q.Text.Contains("happy"))).ToList();
+        }
+
+        private static void ExplicitLoadQuotes()
+        {
+            _context.Set<Horse>().Add(new Horse { SamuraiId = 1, Name = "Mr. Ed" });
+            _context.SaveChanges();
+            _context.ChangeTracker.Clear();
+
+            var samuria = _context.Samurais.Find(1);
+            _context.Entry(samuria).Collection(s => s.Quotes).Load();
+            _context.Entry(samuria).Reference(s => s.Horse).Load();
+        }
+
+        private static void ProjectSamuraisWithQuotes()
+        {
+            var someProperties = _context.Samurais.Select(s => new { s.Id, s.Name,s.Quotes }).ToList();
+            var somePropertiesWithQuotes = _context.Samurais.Select(s => new
+            {
+                s.Id,
+                s.Name,
+                HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy"))
+            }).ToList();
+
+            var samuraisAndQuotes = _context.Samurais.Select(s => new { Samurai = s, HappyQuotes = s.Quotes.Where(q => q.Text.Contains("happy")) }).ToList();
+            
+        }
+
+        private static void ProjectSomeProperties()
+        {
+            var someProperties = _context.Samurais.Select(s => new {s.Id,s.Name}).ToList();
+            var idAndName = _context.Samurais.Select(s => new IdAndName(s.Id, s.Name )).ToList();
+        }
+        public struct IdAndName
+        {
+            public int id;
+            public string Name;
+            public IdAndName(int id,string name) : this()
+            {
+                this.id = id;
+                Name = name;
+            }
 
         }
 
