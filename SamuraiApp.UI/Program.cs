@@ -42,13 +42,26 @@ namespace SamuraiApp.UI
             //ExplicitLoadQuotes();
             // FilteringWithRelatedData();
 
-            ModifyingRelatedDataWhenTracked();
-            ModifyingRelatedDataWhenNotTracked();
+            //ModifyingRelatedDataWhenTracked();
+            //ModifyingRelatedDataWhenNotTracked();
 
             //AddingNewSamuraiToExistingBattle();
-            ReturnBattleWithSamurais();
-            ReturnAllBattleWithSamurais();
-            AddAllSamuraisToAllBattles();
+            //ReturnBattleWithSamurais();
+            //ReturnAllBattleWithSamurais();
+            //AddAllSamuraisToAllBattles();
+
+            RemoveSamuraiFromABattle();
+
+        }
+
+        private static void RemoveSamuraiFromABattle()
+        {
+            var battleWithSamurai = _context.Battles
+                .Include(b => b.Samurais.Where(s => s.Id == 12))
+                .Single(s => s.BattleId == 1);
+            var samurai = battleWithSamurai.Samurais[0];
+            battleWithSamurai.Samurais.Remove(samurai);
+            _context.SaveChanges();
         }
 
         private static void AddAllSamuraisToAllBattles()
