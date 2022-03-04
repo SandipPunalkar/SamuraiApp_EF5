@@ -45,6 +45,38 @@ namespace SamuraiApp.UI
             ModifyingRelatedDataWhenTracked();
             ModifyingRelatedDataWhenNotTracked();
 
+            //AddingNewSamuraiToExistingBattle();
+            ReturnBattleWithSamurais();
+            ReturnAllBattleWithSamurais();
+            AddAllSamuraisToAllBattles();
+        }
+
+        private static void AddAllSamuraisToAllBattles()
+        {
+            var allbattles = _context.Battles.Include(b => b.Samurais).ToList();
+            var allSamurais = _context.Samurais.ToList();
+            foreach (var battle in allbattles)
+            {
+                battle.Samurais.AddRange(allSamurais);
+            }
+            _context.SaveChanges();
+        }
+
+        private static void ReturnAllBattleWithSamurais()
+        {
+            var battles = _context.Battles.Include(b => b.Samurais).ToList();
+        }
+
+        private static void ReturnBattleWithSamurais()
+        {
+            var battle = _context.Battles.Include(b => b.Samurais).FirstOrDefault();
+        }
+
+        private static void AddingNewSamuraiToExistingBattle()
+        {
+            var battle = _context.Battles.FirstOrDefault();
+            battle.Samurais.Add(new Samurai { Name = "Takeda Shingen" });
+            _context.SaveChanges();
         }
 
         private static void ModifyingRelatedDataWhenNotTracked()
@@ -57,7 +89,7 @@ namespace SamuraiApp.UI
              quote.Text += "Did you here that again?";
 
             using var newContext = new SamuraiContext();
-            newContext.Quotes.Update(quote);
+            newContext.Entry(quote).State = EntityState.Modified;
             newContext.SaveChanges();
         }
 
