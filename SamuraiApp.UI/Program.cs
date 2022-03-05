@@ -50,7 +50,18 @@ namespace SamuraiApp.UI
             //ReturnAllBattleWithSamurais();
             //AddAllSamuraisToAllBattles();
 
-           // RemoveSamuraiFromABattle();
+            // RemoveSamuraiFromABattle();
+
+
+            QuerySamuraiBattleStats();
+        }
+
+        private static void QuerySamuraiBattleStats()
+        {
+            //var stats = _context.SamuraiBattleStats.ToList();
+            var firststats = _context.SamuraiBattleStats.FirstOrDefault();
+            var sampsonState = _context.SamuraiBattleStats
+                .FirstOrDefault(b => b.Name ==  "SampsonSan");
 
         }
 
