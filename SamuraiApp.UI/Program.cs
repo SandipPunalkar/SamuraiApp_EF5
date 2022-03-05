@@ -53,7 +53,20 @@ namespace SamuraiApp.UI
             // RemoveSamuraiFromABattle();
 
 
-            QuerySamuraiBattleStats();
+            //QuerySamuraiBattleStats();
+            QueryUsingRowSql();
+            QueryUsingRawSqlWithInterpolation();
+        }
+        private static void QueryUsingRawSqlWithInterpolation()
+        {
+            string name = "Kikuchyo";
+            var samurais = _context.Samurais
+                .FromSqlInterpolated($"Select * from Samurais Where Name= {name}")
+                .ToList();
+        }
+        private static void QueryUsingRowSql()
+        {
+            var samurais = _context.Samurais.FromSqlRaw("Select * from Samurais").ToList();
         }
 
         private static void QuerySamuraiBattleStats()
