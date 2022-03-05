@@ -50,7 +50,7 @@ namespace SamuraiApp.UI
             //ReturnAllBattleWithSamurais();
             //AddAllSamuraisToAllBattles();
 
-            RemoveSamuraiFromABattle();
+           // RemoveSamuraiFromABattle();
 
         }
 
