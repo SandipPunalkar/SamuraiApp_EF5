@@ -54,9 +54,27 @@ namespace SamuraiApp.UI
 
 
             //QuerySamuraiBattleStats();
-            QueryUsingRowSql();
-            QueryUsingRawSqlWithInterpolation();
+            // QueryUsingRowSql();
+            // QueryUsingRawSqlWithInterpolation();
+
+            //sproc
+            QueryUsingFromSqlRawStoredProc();
+            QueryUsingFromSqlIntStoredProc();
+
         }
+        private static void QueryUsingFromSqlRawStoredProc()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlRaw(
+             "EXEC dbo.SamuraisWhoSaidAWord {0}", text).ToList();
+        }
+        private static void QueryUsingFromSqlIntStoredProc()
+        {
+            var text = "Happy";
+            var samurais = _context.Samurais.FromSqlInterpolated(
+             $"EXEC dbo.SamuraisWhoSaidAWord {text}").ToList();
+        }
+
         private static void QueryUsingRawSqlWithInterpolation()
         {
             string name = "Kikuchyo";
